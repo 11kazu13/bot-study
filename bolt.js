@@ -1,6 +1,16 @@
 'use strict';
+const bolt = require('@slack/bolt');
 const dotenv = require('dotenv');
 dotenv.config();
+const app = new bolt.App({
+  token: process.env.SLACK_BOT_TOKEN,
+  appToken: process.env.SLACK_APP_TOKEN,
+  socketMode: true,
+  logLevel: 'debug',
+})
 
-console.log(`SLACK_APP_TOKEN: ${process.env.SLACK_APP_TOKEN}`);
-console.log(`SLACK_BOT_TOKEN: ${process.env.SLACK_BOT_TOKEN}`);
+app.message(/hello/i, ({message, say}) => {
+  say(`こんにちは！ <@${message.user}>さん`);
+});
+
+app.start();
